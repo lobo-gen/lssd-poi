@@ -4,10 +4,6 @@
 <meta charset="UTF-8">
 <title>LSSD POI Form Generator</title>
 
-<meta property="og:title" content="LSSD POI Form Generator">
-<meta property="og:description" content="Generate professional POI intelligence reports for LSSD.">
-<meta property="og:type" content="website">
-
 <meta name="theme-color" content="#2E3E2B">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -25,22 +21,51 @@ body {
 .section-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 25px;
+  margin-bottom: 20px;
 }
 
 .card {
   border: 1px solid #ccc;
-  padding: 10px;
+  padding: 15px;
   border-radius: 6px;
   background: #fff;
   color: #111;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-textarea, input {
+.card h4 {
+  margin: 0 0 5px 0;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+input, textarea {
   width: 100%;
-  margin-top: 5px;
+  padding: 6px;
+  box-sizing: border-box;
 }
 
+/* CHECKBOX FIX */
+label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+label input[type="checkbox"] {
+  margin: 0;
+}
+
+.card label {
+  margin-bottom: 4px;
+}
+
+/* HEADER */
 .header {
   display: flex;
   align-items: center;
@@ -57,6 +82,8 @@ textarea, input {
 
 button {
   margin-right: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
 }
 </style>
 </head>
@@ -64,22 +91,20 @@ button {
 <body>
 
 <div class="header">
-  <img src="sheriff.png" alt="LSSD Logo">
+  <img src="sheriff.png">
   <h2>LSSD POI Form Generator</h2>
 </div>
 
 <div class="section-grid">
 
-<!-- CLASSIFICATION -->
 <div class="card">
 <h4>Classification</h4>
-<label><input type="checkbox" id="member"> Member</label><br>
-<label><input type="checkbox" id="associate"> Associate</label><br>
-<input id="gang" placeholder="Gang"><br>
+<label><input type="checkbox" id="member"> Member</label>
+<label><input type="checkbox" id="associate"> Associate</label>
+<input id="gang" placeholder="Gang">
 <input id="clique" placeholder="Clique">
 </div>
 
-<!-- IDENTITY -->
 <div class="card">
 <h4>Identity</h4>
 <input id="name" placeholder="Last, First, Middle">
@@ -89,7 +114,6 @@ button {
 <input id="otherAddress" placeholder="Other Address / School">
 </div>
 
-<!-- PERSONAL -->
 <div class="card">
 <h4>Personal Info</h4>
 <input id="sex" placeholder="Sex">
@@ -105,7 +129,6 @@ button {
 
 <div class="section-grid">
 
-<!-- INTELLIGENCE -->
 <div class="card">
 <h4>Intelligence</h4>
 <input id="photo" placeholder="Photo URL">
@@ -115,21 +138,19 @@ button {
 <textarea id="description" rows="6" placeholder="Physical Description / Misc Info"></textarea>
 </div>
 
-<!-- CRITERIA -->
 <div class="card">
 <h4>Gang Criteria (min 2 required)</h4>
 
-<label><input type="checkbox" id="c1"> Self Admission</label><br>
-<label><input type="checkbox" id="c2"> Arrest for Gang Offense</label><br>
-<label><input type="checkbox" id="c3"> Association with Members</label><br>
-<label><input type="checkbox" id="c4"> Symbols / Hand Signs</label><br>
-<label><input type="checkbox" id="c5"> Known Locations</label><br>
-<label><input type="checkbox" id="c6"> Gang Dress</label><br>
-<label><input type="checkbox" id="c7"> Tattoos</label><br>
+<label><input type="checkbox" id="c1"> Self Admission</label>
+<label><input type="checkbox" id="c2"> Arrest for Gang Offense</label>
+<label><input type="checkbox" id="c3"> Association with Members</label>
+<label><input type="checkbox" id="c4"> Symbols / Hand Signs</label>
+<label><input type="checkbox" id="c5"> Known Locations</label>
+<label><input type="checkbox" id="c6"> Gang Dress</label>
+<label><input type="checkbox" id="c7"> Tattoos</label>
 
 </div>
 
-<!-- ADMIN -->
 <div class="card">
 <h4>Administration</h4>
 <input id="completingOfficer" placeholder="Completing Officer">
@@ -153,38 +174,12 @@ button {
 
 <script>
 
-// helpers
 const $ = id => document.getElementById(id);
 
-// ---------------- GENERATE ----------------
 function generate() {
 
   const member = $("member").checked ? "X" : " ";
   const associate = $("associate").checked ? "X" : " ";
-
-  const gang = $("gang").value || "Type Here";
-  const clique = $("clique").value || "Type Here";
-
-  const name = $("name").value || "Type Here";
-  const residence = $("residence").value || "Type Here";
-  const city = $("city").value || "Type Here";
-  const moniker = $("moniker").value || "Type Here";
-  const otherAddress = $("otherAddress").value || "Type Here";
-
-  const sex = $("sex").value || "Type Here";
-  const race = $("race").value || "Type Here";
-  const age = $("age").value || "Type Here";
-
-  const occupation = $("occupation").value || "Type Here";
-  const phone = $("phone").value || "Type Here";
-  const dl = $("dl").value || "Type Here";
-  const state = $("state").value || "Type Here";
-
-  const photo = $("photo").value || "https://i.imgur.com/b4ipgJk.png";
-  const officer = $("officer").value || "Type Here";
-  const serial = $("serial").value || "Type Here";
-  const date = $("date").value || "Type Here";
-  const description = $("description").value || "Type Here";
 
   const criteriaList = [
     ["c1","Self Admission"],
@@ -203,44 +198,44 @@ function generate() {
 
   const output = `
 [table][tr]
-[td][b]MEMBER[/b] ${member} [b]ASSOCIATE[/b] ${associate} [b]GANG:[/b] ${gang}[/td]
+[td][b]MEMBER[/b] ${member} [b]ASSOCIATE[/b] ${associate} [b]GANG:[/b] ${$("gang").value}[/td]
 [td][/td]
-[td][b]CLIQUE:[/b] ${clique}[/td]
+[td][b]CLIQUE:[/b] ${$("clique").value}[/td]
 [/tr][/table]
 
 [table][tr]
-[td][b]SUBJECT'S NAME:[/b] ${name}[/td]
-[td][b]RESIDENCE ADDRESS:[/b] ${residence}[/td]
-[td][b]CITY:[/b] ${city}[/td]
+[td][b]SUBJECT'S NAME:[/b] ${$("name").value}[/td]
+[td][b]RESIDENCE ADDRESS:[/b] ${$("residence").value}[/td]
+[td][b]CITY:[/b] ${$("city").value}[/td]
 [/tr][/table]
 
 [table][tr]
-[td][b]MONIKER:[/b] ${moniker}[/td]
-[td][b]OTHER ADDRESS/SCHOOL:[/b] ${otherAddress}[/td]
+[td][b]MONIKER:[/b] ${$("moniker").value}[/td]
+[td][b]OTHER ADDRESS/SCHOOL:[/b] ${$("otherAddress").value}[/td]
 [/tr][/table]
 
 [table][tr]
-[td][b]SEX:[/b] ${sex}[/td]
-[td][b]RACE:[/b] ${race}[/td]
-[td][b]AGE:[/b] ${age}[/td]
+[td][b]SEX:[/b] ${$("sex").value}[/td]
+[td][b]RACE:[/b] ${$("race").value}[/td]
+[td][b]AGE:[/b] ${$("age").value}[/td]
 [/tr][/table]
 
 [table][tr]
-[td][b]OCCUPATION:[/b] ${occupation}
-[b]PHONE:[/b] ${phone}
-[b]DL:[/b] ${dl}
-[b]STATE:[/b] ${state}
+[td][b]OCCUPATION:[/b] ${$("occupation").value}
+[b]PHONE:[/b] ${$("phone").value}
+[b]DL:[/b] ${$("dl").value}
+[b]STATE:[/b] ${$("state").value}
 [/td]
 [/tr][/table]
 
 [table][tr]
 [td][b]PHOTO[/b]
-[img]${photo}[/img][/td]
+[img]${$("photo").value || "https://i.imgur.com/b4ipgJk.png"}[/img][/td]
 [td]
-[b]OFFICER:[/b] ${officer} ${serial}
-[b]DATE:[/b] ${date}
+[b]OFFICER:[/b] ${$("officer").value} ${$("serial").value}
+[b]DATE:[/b] ${$("date").value}
 [b]DESCRIPTION:[/b]
-${description}
+${$("description").value}
 [/td]
 [/tr][/table]
 
@@ -253,25 +248,23 @@ ${criteria}
 [/tr][/table]
 
 [table][tr]
-[td][b]COMPLETING OFFICER:[/b] ${completingOfficer.value || "Type Here"}[/td]
-[td][b]SERIAL:[/b] ${completingSerial.value || "Type Here"}[/td]
-[td][b]TEAM:[/b] ${team.value || "Type Here"}[/td]
-[td][b]DATE:[/b] ${completedDate.value || "Type Here"}[/td]
-[td][b]SUPERVISOR:[/b] ${supervisor.value || "Type Here"}[/td]
-[td][b]SERIAL:[/b] ${supervisorSerial.value || "Type Here"}[/td]
+[td][b]COMPLETING OFFICER:[/b] ${$("completingOfficer").value}[/td]
+[td][b]SERIAL:[/b] ${$("completingSerial").value}[/td]
+[td][b]TEAM:[/b] ${$("team").value}[/td]
+[td][b]DATE:[/b] ${$("completedDate").value}[/td]
+[td][b]SUPERVISOR:[/b] ${$("supervisor").value}[/td]
+[td][b]SERIAL:[/b] ${$("supervisorSerial").value}[/td]
 [/tr][/table]
 `.trim();
 
   $("output").value = output;
 }
 
-// ---------------- COPY ----------------
 function copyOutput() {
   $("output").select();
   document.execCommand("copy");
 }
 
-// ---------------- CLEAR ----------------
 function clearForm() {
   location.reload();
 }
